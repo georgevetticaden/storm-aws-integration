@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  	
+  	<parent>
+    	<groupId>hortonworks.storm.aws</groupId>
+    	<artifactId>storm-aws-integration</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  
+	<artifactId>storm-s3</artifactId>
+	
+	<dependencies>
+		
+		<dependency>
+    		<groupId>com.amazonaws</groupId>
+    		<artifactId>aws-java-sdk-s3</artifactId>
+    		<version>${aws-java-sdk.version}</version>
+ 		</dependency>
+ 		
+	<dependency>
+	    <groupId>com.fasterxml.jackson.dataformat</groupId>
+	    <artifactId>jackson-dataformat-csv</artifactId>
+	    <version>${jackson.version}</version>
+	</dependency> 		
+	
+	</dependencies>
+	
+</project>
