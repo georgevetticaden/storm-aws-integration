@@ -34,7 +34,7 @@ import com.amazonaws.services.s3.model.S3Object;
 public class S3Connection {
     private static final Logger LOG = LoggerFactory.getLogger(S3Connection.class);
     private final S3ConnectionInfo s3ConnectionInfo;
-    private AmazonS3 s3Client;
+    AmazonS3 s3Client;
 
     public S3Connection (S3ConnectionInfo s3ConnectionInfo) {
         this.s3ConnectionInfo = s3ConnectionInfo;

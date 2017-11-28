@@ -5,7 +5,9 @@ import static org.junit.Assert.assertThat;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +85,31 @@ public class S3ConnectionTest {
 	}	
 	
 	@Test
+	public void getObject() throws Exception {
+		S3Connection s3Connection = createS3Connection();
+		String key = "d05aeb69-8691-48d8-a299-ee5e4590b542";
+		S3Object alertObject = s3Connection.getObject(BUCKET_NAME, key);
+		LOG.info("Object Last modified date: " + alertObject.getObjectMetadata().getLastModified());
+		S3ObjectInputStream alertStream = alertObject.getObjectContent();
+		String alertValue = IOUtils.toString(alertStream);
+		LOG.info("Alert Key [" + key + "], Alert Value[" + alertValue);
+	}
+	
+	@Test
+	public void deleteAllObjectInBucket() throws Exception {
+		S3Connection s3Connection = createS3Connection();
+		ObjectListing alertObjectListing = s3Connection.listObjects(BUCKET_NAME);
+		List<S3ObjectSummary> alertSummaries = alertObjectListing.getObjectSummaries();
+		LOG.info("About to delete " + alertSummaries.size() + " alert events from Bucket["+BUCKET_NAME + "] "  );
+		for(S3ObjectSummary alert: alertSummaries) {
+			String alertKey = alert.getKey();
+			s3Connection.s3Client.deleteObject(BUCKET_NAME, alertKey);
+		}	
+		alertObjectListing = s3Connection.listObjects(BUCKET_NAME);
+		assertThat(alertObjectListing.getObjectSummaries().size(), is(0));
+	}
+	
+	@Test
 	public void putSpeedingAlertInS3() throws Exception{
 		StreamlineEventImpl speedingAlert = createStreamLineSpeedingAlertEvent();
 		LOG.info(speedingAlert.toString());
@@ -99,15 +126,18 @@ public class S3ConnectionTest {
 	public static String createAlertASCSV(Map<String, Object> alertMap) throws Exception {
 		CsvSchema schema = null;
 		CsvSchema.Builder schemaBuilder = CsvSchema.builder();
-
-		for (String col : alertMap.keySet()) {
+		
+		Map<String, Object> newAlertMap = new LinkedHashMap<String, Object>();
+		newAlertMap.put("alertDate", new Date());
+		newAlertMap.putAll(alertMap);
+		for (String col : newAlertMap.keySet()) {
 			schemaBuilder.addColumn(col);
 		}
 		schema = schemaBuilder.build().withLineSeparator("\r");
 		
 		Writer writer = new StringWriter();
 		CsvMapper mapper = new CsvMapper();
-		mapper.writer(schema).writeValues(writer).write(alertMap);
+		mapper.writer(schema).writeValues(writer).write(newAlertMap);
 		writer.flush();
 		return writer.toString();
 	}	

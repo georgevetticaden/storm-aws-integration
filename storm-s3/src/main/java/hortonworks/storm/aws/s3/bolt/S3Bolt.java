@@ -5,6 +5,8 @@ import hortonworks.storm.aws.s3.S3ConnectionInfo;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.storm.task.OutputCollector;
@@ -58,28 +60,32 @@ public class S3Bolt extends AbstractProcessorBolt{
 		//nothing to do since it is a sink
 	}
 	
+
 	/**
-	 * Takes a StreamLine event and converts into a CSV delimited text with seperator ','
+	 * Creates a StreamLine Events as CSV string delimted by ','
 	 * @param alertMap
 	 * @return
 	 * @throws Exception
 	 */
-	private static String createStreamLineEventAsCSV(Map<String, Object> alertMap) throws Exception {
+	public static String createStreamLineEventAsCSV(Map<String, Object> alertMap) throws Exception {
 		
 		/** GJVETT: Need to check if i can create the mapper onnce and reuse. For now creating on each invocation */
 		CsvSchema schema = null;
 		CsvSchema.Builder schemaBuilder = CsvSchema.builder();
-
-		for (String col : alertMap.keySet()) {
+		
+		Map<String, Object> newAlertMap = new LinkedHashMap<String, Object>();
+		newAlertMap.put("alertDate", new Date());
+		newAlertMap.putAll(alertMap);
+		for (String col : newAlertMap.keySet()) {
 			schemaBuilder.addColumn(col);
 		}
 		schema = schemaBuilder.build().withLineSeparator("\r");
 		
 		Writer writer = new StringWriter();
 		CsvMapper mapper = new CsvMapper();
-		mapper.writer(schema).writeValues(writer).write(alertMap);
+		mapper.writer(schema).writeValues(writer).write(newAlertMap);
 		writer.flush();
 		return writer.toString();
-	}	
+	}		
 
 }
