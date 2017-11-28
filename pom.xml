@@ -20,6 +20,9 @@
 		<jackson.version>2.7.3</jackson.version>
 	</properties>
 	
+	<dependencies>
+	
+	
 	<dependency>
 		<groupId>org.apache.httpcomponents</groupId>
   		<artifactId>httpclient</artifactId>		
@@ -38,7 +41,6 @@
         </exclusions>
 	</dependency>	
 
-	<dependencies>
         <dependency>
             <groupId>com.hortonworks.streamline</groupId>
             <artifactId>streamline-sdk</artifactId>
@@ -60,7 +62,7 @@
             <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
             <version>${storm.version}</version>
-            <scope>${provided.scope}</scope>
+            <scope>provided</scope>
         </dependency>
                    
         <dependency>
