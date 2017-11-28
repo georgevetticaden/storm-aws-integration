@@ -17,12 +17,63 @@
     		<version>${aws-java-sdk.version}</version>
  		</dependency>
  		
-	<dependency>
-	    <groupId>com.fasterxml.jackson.dataformat</groupId>
-	    <artifactId>jackson-dataformat-csv</artifactId>
-	    <version>${jackson.version}</version>
-	</dependency> 		
+		<dependency>
+	    	<groupId>com.fasterxml.jackson.dataformat</groupId>
+	    	<artifactId>jackson-dataformat-csv</artifactId>
+	    	<version>${jackson.version}</version>
+		</dependency> 
+						
 	
 	</dependencies>
+	
+	<build>
+        <plugins>
+        	        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.sf</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.dsa</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/*.rsa</exclude>
+                                <exclude>META-INF/*.EC</exclude>
+                                <exclude>META-INF/*.ec</exclude>
+                                <exclude>META-INF/MSFTSIG.SF</exclude>
+                                <exclude>META-INF/MSFTSIG.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.amazonaws</pattern>
+                                    <shadedPattern>com.amazonaws.shaded</shadedPattern>
+                                </relocation>
+								<relocation>
+									<pattern>org.apache.http</pattern>
+								    <shadedPattern>org.apache.aws.shade.org.apache.http</shadedPattern>
+								</relocation>                                
+                           </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>	
 	
 </project>
