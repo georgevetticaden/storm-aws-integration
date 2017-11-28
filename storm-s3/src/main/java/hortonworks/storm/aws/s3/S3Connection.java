@@ -49,9 +49,7 @@ public class S3Connection {
     }
     
 	public List<Bucket> listBuckets() {
-
 		return s3Client.listBuckets();
-		
 	}    
 	
 	public void putStringObject(String bucketName, String key, String value) {
@@ -65,8 +63,6 @@ public class S3Connection {
 	public ObjectListing listObjects(String bucketName) {
 		return s3Client.listObjects(bucketName);
 	}
-
-
 
     void shutdown () {
         s3Client.shutdown();
