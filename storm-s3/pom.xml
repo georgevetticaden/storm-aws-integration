@@ -67,7 +67,8 @@
 								<relocation>
 									<pattern>org.apache.http</pattern>
 								    <shadedPattern>org.apache.aws.shade.org.apache.http</shadedPattern>
-								</relocation>                                
+								</relocation>     
+								                           
                            </relocations>
                         </configuration>
                     </execution>
