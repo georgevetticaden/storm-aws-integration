@@ -4,7 +4,7 @@
   	<parent>
     	<groupId>hortonworks.storm.aws</groupId>
     	<artifactId>storm-aws-integration</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+    	<version>${storm.aws.integration}</version>
   	</parent>
   
 	<artifactId>storm-s3</artifactId>
