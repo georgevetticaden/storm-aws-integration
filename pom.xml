@@ -14,7 +14,7 @@
 	<properties>
 		<storm.aws.integration>1.0.0-HDF-3-2-SNAPSHOT</storm.aws.integration>
 		<storm.version>1.1.0</storm.version>
-		<streamline.version>0.6.0.3.1.0.0-564</streamline.version>
+		<streamline.version>0.6.0.3.2.0.0-358</streamline.version>
 		<aws-java-sdk.version>1.11.229</aws-java-sdk.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<junit.version>4.5</junit.version> 
